@@ -1,51 +1,96 @@
-class Player:
-    def __init__(self, name):
+import random
+
+
+class Human:
+    def __init__(self, name="Human", job=None, home=None, car=None):
         self.name = name
-        self.hp = 100
-        self.score = 0
+        self.money = 100
+        self.job = job
+        self.car = car
+        self.home = home
+        self.gladness = 50
 
-    def show_info(self):
-        print("Name", self.name)
-        print("Hp", self.hp)
-        print("Score", self.score)
+    def get_car(self):
+            self.car = Car("audi")
+
+    def get_home(self):
+            self.home = House()
 
 
+    def get_job(self):
+        pass
 
-    def set_name(self, new_name):
-        self.name = new_name
 
-    def set_hp(self, hp):
-        if hp < 100 and hp > 0:
-            self.hp = hp
-        else:
-            print("error hp")
+    def work(self):
+         self.money += self.job.salary
+         self.gladness -= random.randint(1, 10)
 
-    def set_score(self, score):
 
-        score.score = "set_score"
+    def chill(self):
+        self.gladness += random.randint(5, 15)
+        self.money -= random.randint(10, 20)
+
+    def clean_home(self):
+        pass
 
 
     def is_alive(self):
-        return self.hp > 0
-
-    def damage(self, amount):
-        self.hp -= amount
-
-    def add_score(self, amount):
-        self.score += amount
-
-
-from random import randint
+            if self.gladness <= 0:
+                print("Depression")
+                return  False
+            elif self.money < 100:
+                print("Bankrupt")
+                return False
 
 
-player = Player("Barabulka")
-player.show_info()
+    def live(self):
+        if self.is_alive():
+            return False
+        if self.home is None:
+            print("Settled in the house")
+            self.get_home()
+        if self.car is None:
+            self.get_car()
+            print ("Bought new car ", self.car.brand)
 
-while player.is_alive():
-    num = randint(1, 3)
-    if num == 1:
-        player.damage(randint(1, 20))
-    elif num == 2:
-        player.add_score(randint(1, 20))
+        if self.job is None:
+            self.get_job()
+            print("I've got a new job", self.job.job, "witn salary", self.job.salary )
 
-player.show_info()
+        if self.money <= 0:
+            self.work()
+            print("go to work")
+
+import random
+
+class Job:
+    def __init__(self):
+        self.job = random.choice(("developer", "driver", "teacher", "taxi"))
+        self.salary = random.randint(100, 200)
+class House:
+    def __init__(self):
+        self.food = 0
+        self.mess = 0
+class Car:
+    def __init__(self, brand):
+        self.brand = brand
+        self.countHuman = 2
+        self.passengers = []
+
+    def add_passenger(self, *args):
+        for human in args:
+            self.passengers.append(human)
+
+    def show_passengers(self):
+        if self.passengers != []:
+            print("Model:",self.brand)
+            for human in self.passengers:
+                print(human.name)
+        else:
+            print("There are not passengers in car!")
+
+#nick = Human("Nick")
+#kate = Human("Kate")
+#car = Car("audi")
+#car.add_passenger(nick, kate)
+#car.show_passengers()
